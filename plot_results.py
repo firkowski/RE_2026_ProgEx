@@ -13,9 +13,6 @@ sys.path.insert(0, _DIR)
 from plotting import make_3d_figure, make_filter_figure
 
 _RESULTS = os.path.join(_DIR, 'results.npz')
-_IMAGE   = 're-student'
-_COMMON  = ['--rm', '--cpus=4', '--memory=2g', '--memory-swap=2g',
-            '-v', f'{_DIR}:/work', '-w', '/work']
 
 
 def _load():
@@ -71,18 +68,16 @@ def _show(d, rerun_callback):
 
 if __name__ == '__main__':
     if not os.path.exists(_RESULTS):
-        print(f"ERROR: {_RESULTS} not found. Run run.bat / run.sh first.")
+        print(f"ERROR: {_RESULTS} not found. Run run.sh first.")
         sys.exit(1)
 
     def _rerun(_event):
         plt.close('all')
-        print("Re-running simulation in Docker...")
-        ret = subprocess.run(
-            ['docker', 'run'] + _COMMON + [_IMAGE, 'python', 'run.py']
-        ).returncode
+        print("Re-running simulation...")
+        ret = subprocess.run([sys.executable, 'run.py']).returncode
         if ret == 0:
             os.execv(sys.executable, [sys.executable] + sys.argv)
         else:
-            print("ERROR: Docker run failed.")
+            print("ERROR: Simulation failed.")
 
     _show(_load(), rerun_callback=_rerun)

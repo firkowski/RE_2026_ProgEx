@@ -81,21 +81,18 @@ Runtime per step (budgets: 5 ms EKF, 50 ms non-Gaussian estimator):
 
 ## Running
 
-The simulator is provided as an obfuscated module that requires **Python 3.10** (x86-64).
-
-With Docker (matches the grading environment, 4 cores / 2 GB RAM):
+The simulator is provided as an obfuscated module that requires **Python 3.10** on
+**Linux x86-64** (use WSL on Windows). `run.sh` creates a local virtual environment in `.venv`
+using `python3.10`, or [uv](https://docs.astral.sh/uv/) if that is not installed, and installs
+`requirements.txt` into it.
 
 ```bash
 bash run.sh            # simulate, estimate, open interactive plots
 bash run.sh headless   # save plot_3d.png, plot_ekf.png, plot_nge.png instead
 ```
 
-Without Docker:
-
-```bash
-python3.10 -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/python run.py --headless
-```
+The *Rerun Simulation* button on the 3D plot reruns `run.py` in the same environment, so
+`estimator.py` can be edited while the plots stay open.
 
 Regenerate the demo video (needs `ffmpeg`):
 
@@ -112,4 +109,5 @@ that ground truth is available for plotting. The course simulator does not expos
 |---|---|
 | `estimator.py` | **EKF and particle filter implementation** |
 | `media/make_video.py` | Ground-truth simulation and animation for the demo |
-| `const.py`, `run.py`, `simulator.py`, `scoring.py`, `plotting.py`, `plot_results.py`, `run.sh`, `run.bat`, `Dockerfile`, `entrypoint.sh` | Exercise framework provided by the course |
+| `run.sh` | Launcher: sets up `.venv`, runs the simulation and opens the plots |
+| `const.py`, `run.py`, `simulator.py`, `scoring.py`, `plotting.py`, `plot_results.py` | Exercise framework provided by the course |
